@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><title>Patients</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header><h1>CareSphere - Patients</h1><button onclick="logout()">Logout</button></header>
+<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
+<main>
+<h2>Add Patient</h2>
+<form id="patientForm" class="form-grid">
+<input id="pname" placeholder="Name" required><input id="page" type="number" placeholder="Age" required>
+<input id="pgender" placeholder="Gender"><input id="pblood" placeholder="Blood Group">
+<input id="pdisease" placeholder="Disease"><input id="pphone" placeholder="Phone">
+<button>Add Patient</button>
+</form>
+<p id="message"></p>
+<h2>Patient List</h2><table><thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Blood</th><th>Disease</th><th>Phone</th></tr></thead><tbody id="patientTable"></tbody></table>
+</main>
+<script src="js/script.js"></script><script>document.getElementById('patientForm').addEventListener('submit',addPatient); loadPatients();</script>
+</body></html>

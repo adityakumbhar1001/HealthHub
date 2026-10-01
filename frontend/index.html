@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+<div class="login-box">
+    <h1>CareSphere</h1>
+    <p>Smart Hospital Management System</p>
+    <form id="loginForm">
+        <input id="username" placeholder="Username" required>
+        <input id="password" type="password" placeholder="Password" required>
+        <button>Login</button>
+    </form>
+    <small>Demo: admin/admin123</small>
+    <p id="message"></p>
+</div>
+<script src="js/script.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', login);
+</script>
+</body>
+</html>

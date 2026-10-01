@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html><head><title>Doctors</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header><h1>CareSphere - Doctors</h1><button onclick="logout()">Logout</button></header>
+<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
+<main>
+<h2>Add Doctor</h2>
+<form id="doctorForm" class="form-grid"><input id="dname" placeholder="Name" required><input id="dspecialization" placeholder="Specialization"><input id="dexperience" type="number" placeholder="Experience"><input id="dphone" placeholder="Phone"><button>Add Doctor</button></form>
+<p id="message"></p>
+<h2>Doctor List</h2><table><thead><tr><th>ID</th><th>Name</th><th>Specialization</th><th>Experience</th><th>Phone</th></tr></thead><tbody id="doctorTable"></tbody></table>
+</main>
+<script src="js/script.js"></script><script>document.getElementById('doctorForm').addEventListener('submit',addDoctor);loadDoctors();</script>
+</body></html>

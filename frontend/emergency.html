@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html><head><title>Emergency</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header><h1>CareSphere - Emergency</h1><button onclick="logout()">Logout</button></header>
+<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
+<main><h2>Add Emergency Case</h2>
+<form id="emergencyForm" class="form-grid"><input id="ename" placeholder="Patient Name" required><input id="econdition" placeholder="Condition"><select id="epriority"><option value="1">1 - Critical</option><option value="2">2 - Serious</option><option value="3">3 - Moderate</option><option value="4">4 - Normal</option></select><button>Add Case</button></form>
+<p id="message"></p><h2>Priority Queue</h2><table><thead><tr><th>ID</th><th>Patient</th><th>Condition</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead><tbody id="emergencyTable"></tbody></table>
+</main><script src="js/script.js"></script><script>document.getElementById('emergencyForm').addEventListener('submit',addEmergency);loadEmergency();</script>
+</body></html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html><head><title>Appointments</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header><h1>CareSphere - Appointments</h1><button onclick="logout()">Logout</button></header>
+<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
+<main>
+<h2>Book Appointment</h2>
+<form id="appointmentForm" class="form-grid">
+<input id="apatient" type="number" placeholder="Patient ID" required><input id="adoctor" type="number" placeholder="Doctor ID" required>
+<input id="adate" type="date" required><input id="atime" type="time" required><input id="areason" placeholder="Reason"><button>Book Appointment</button>
+</form>
+<p id="message"></p>
+<h2>Appointments</h2><table><thead><tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr></thead><tbody id="appointmentTable"></tbody></table>
+</main>
+<script src="js/script.js"></script><script>document.getElementById('appointmentForm').addEventListener('submit',addAppointment);loadAppointments();</script>
+</body></html>

@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html><head><title>Pharmacy</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header><h1>CareSphere - Pharmacy</h1><button onclick="logout()">Logout</button></header>
+<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
+<main><h2>Add Medicine</h2><form id="medicineForm" class="form-grid"><input id="mname" placeholder="Medicine Name" required><input id="mquantity" type="number" placeholder="Quantity" required><input id="mprice" type="number" step="0.01" placeholder="Price" required><input id="mexpiry" type="date"><button>Add Medicine</button></form><p id="message"></p>
+<table><thead><tr><th>ID</th><th>Name</th><th>Quantity</th><th>Price</th><th>Expiry</th><th>Alert</th></tr></thead><tbody id="medicineTable"></tbody></table></main>
+<script src="js/script.js"></script><script>document.getElementById('medicineForm').addEventListener('submit',addMedicine);loadMedicines();</script>
+</body></html>

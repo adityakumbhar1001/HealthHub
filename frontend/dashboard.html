@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><h1>CareSphere</h1><button onclick="logout()">Logout</button></header>
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="patients.html">Patients</a>
+<a href="doctors.html">Doctors</a>
+<a href="appointments.html">Appointments</a>
+<a href="emergency.html">Emergency</a>
+<a href="beds.html">Beds</a>
+<a href="pharmacy.html">Pharmacy</a>
+<a href="laboratory.html">Laboratory</a>
+<a href="billing.html">Billing</a>
+</nav>
+<main>
+<h2>Hospital Dashboard</h2>
+<div class="cards">
+<div class="card"><h3>Patients</h3><span id="patients">0</span></div>
+<div class="card"><h3>Doctors</h3><span id="doctors">0</span></div>
+<div class="card"><h3>Appointments</h3><span id="appointments">0</span></div>
+<div class="card"><h3>Available Beds</h3><span id="beds">0</span></div>
+</div>
+</main>
+<script src="js/script.js"></script>
+<script>loadDashboard();</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html><head><title>Beds</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header><h1>CareSphere - Beds</h1><button onclick="logout()">Logout</button></header>
+<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
+<main><h2>Bed Management</h2><p>To allocate a bed, enter a patient ID.</p><input id="bedPatient" type="number" placeholder="Patient ID"><button onclick="allocateBed()">Allocate Selected Bed</button><p id="message"></p>
+<table><thead><tr><th>ID</th><th>Room</th><th>Ward</th><th>Status</th><th>Patient</th><th>Action</th></tr></thead><tbody id="bedTable"></tbody></table>
+</main><script src="js/script.js"></script><script>loadBeds();</script>
+</body></html>
