@@ -1,9 +1,160 @@
 <!DOCTYPE html>
-<html><head><title>Pharmacy</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Pharmacy</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main><h2>Add Medicine</h2><form id="medicineForm" class="form-grid"><input id="mname" placeholder="Medicine Name" required><input id="mquantity" type="number" placeholder="Quantity" required><input id="mprice" type="number" step="0.01" placeholder="Price" required><input id="mexpiry" type="date"><button>Add Medicine</button></form><p id="message"></p>
-<table><thead><tr><th>ID</th><th>Name</th><th>Quantity</th><th>Price</th><th>Expiry</th><th>Alert</th></tr></thead><tbody id="medicineTable"></tbody></table></main>
-<script src="js/script.js"></script><script>document.getElementById('medicineForm').addEventListener('submit',addMedicine);loadMedicines();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Pharmacy - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page pharmacy-page">
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="dashboard.html">
+            <span class="admin-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="admin-nav-label">WORKSPACE</p>
+        <nav class="admin-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <a class="is-active" href="pharmacy.html" aria-current="page"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <span class="admin-nav-divider" aria-hidden="true"></span>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Pharmacy</strong></div>
+            <button class="admin-logout" type="button" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="pharmacy-main">
+            <section class="pharmacy-page-heading">
+                <div>
+                    <p class="pharmacy-eyebrow">MEDICINE INVENTORY</p>
+                    <h1>Pharmacy</h1>
+                    <p>Manage medicine records, stock levels, and expiry dates.</p>
+                </div>
+                 </section>
+
+            <section class="pharmacy-overview" aria-label="Inventory summary">
+                <article class="pharmacy-summary-card pharmacy-catalog-card">
+                    <span class="pharmacy-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="m9.5 3.8 1.2-.7a2.7 2.7 0 0 1 2.6 0l1.2.7 1.2-.1a2.7 2.7 0 0 1 2.3 1.3l.6 1.1 1.1.6a2.7 2.7 0 0 1 1.3 2.3l-.1 1.2.7 1.2a2.7 2.7 0 0 1 0 2.6l-.7 1.2.1 1.2a2.7 2.7 0 0 1-1.3 2.3l-1.1.6-.6 1.1a2.7 2.7 0 0 1-2.3 1.3l-1.2-.1-1.2.7a2.7 2.7 0 0 1-2.6 0l-1.2-.7-1.2.1A2.7 2.7 0 0 1 6 18.4l-.6-1.1-1.1-.6A2.7 2.7 0 0 1 3 14.4l.1-1.2-.7-1.2a2.7 2.7 0 0 1 0-2.6l.7-1.2L3 7a2.7 2.7 0 0 1 1.3-2.3l1.1-.6L6 3a2.7 2.7 0 0 1 2.3-1.3l1.2.1Z" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="m8.5 15.5 7-7m-5.8.7h.1m4.4 5.6h.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    </span>
+                    <div><p>Medicine types</p><strong id="medicineCount">—</strong><span>Registered products</span></div>
+                </article>
+                <article class="pharmacy-summary-card pharmacy-units-card">
+                    <span class="pharmacy-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Zm0 0 8 4.5m8-4.5-8 4.5m0 0V21m-4-14 8 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Total units</p><strong id="medicineUnits">—</strong><span>Across listed inventory</span></div>
+                </article>
+                <article class="pharmacy-summary-card pharmacy-low-card">
+                    <span class="pharmacy-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M12 3 2.8 19h18.4L12 3Zm0 5.5v5m0 3.2v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Low stock</p><strong id="medicineLowStock">—</strong><span>Quantity below 10</span></div>
+                </article>
+            </section>
+
+            <section class="pharmacy-panel pharmacy-form-panel" aria-labelledby="add-medicine-heading">
+                <div class="pharmacy-panel-heading">
+                    <span class="pharmacy-section-icon" aria-hidden="true">＋</span>
+                    <div>
+                        <h2 id="add-medicine-heading">Add medicine</h2>
+                        <p>Enter product details to add it to the pharmacy inventory.</p>
+                    </div>
+                </div>
+                <form id="medicineForm" class="form-grid pharmacy-form">
+                    <div class="form-field">
+                        <label for="mname">Medicine name <span aria-hidden="true">*</span></label>
+                        <input id="mname" name="name" placeholder="Enter medicine name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="mquantity">Quantity <span aria-hidden="true">*</span></label>
+                        <input id="mquantity" name="quantity" type="number" placeholder="Enter quantity" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="mprice">Price <span aria-hidden="true">*</span></label>
+                        <input id="mprice" name="price" type="number" step="0.01" placeholder="Enter price" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="mexpiry">Expiry date <span class="pharmacy-optional">(optional)</span></label>
+                        <input id="mexpiry" name="expiry_date" type="date">
+                    </div>
+                    <div class="pharmacy-form-actions">
+                        <span class="pharmacy-required-note"><span aria-hidden="true">*</span> Required fields</span>
+                        <button class="pharmacy-submit" type="submit"><span aria-hidden="true">＋</span> Add medicine</button>
+                    </div>
+                </form>
+            </section>
+
+            <p id="message" class="pharmacy-message" role="status" aria-live="polite"></p>
+
+            <section class="pharmacy-panel pharmacy-inventory-panel" aria-labelledby="inventory-heading">
+                <div class="pharmacy-inventory-heading">
+                    <div class="pharmacy-panel-heading">
+                        <span class="pharmacy-section-icon pharmacy-inventory-icon" aria-hidden="true">▤</span>
+                        <div>
+                            <h2 id="inventory-heading">Medicine inventory</h2>
+                            <p>Monitor quantities, pricing, expiry dates, and stock alerts.</p>
+                        </div>
+                    </div>
+                    <div class="pharmacy-inventory-controls">
+                        <label class="pharmacy-search">
+                            <span class="sr-only">Search medicines by name, ID, price, or expiry</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="10.8" cy="10.8" r="6.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                                <path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                            <input id="medicineSearch" type="search" placeholder="Search medicines">
+                        </label>
+                        <label class="pharmacy-stock-filter">
+                            <span class="sr-only">Filter medicines by stock level</span>
+                            <select id="medicineStockFilter">
+                                <option value="">All stock levels</option>
+                                <option value="low">Low stock</option>
+                                <option value="ok">In stock</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="pharmacy-table-meta"><span id="medicineListCount">Loading medicines…</span></div>
+                <div class="pharmacy-table-wrap">
+                    <table class="pharmacy-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Medicine ID</th>
+                                <th scope="col">Medicine</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Expiry date</th>
+                                <th scope="col">Stock status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="medicineTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="pharmacy-footer">CareSphere <span aria-hidden="true">·</span> Pharmacy inventory</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('medicineForm').addEventListener('submit', addMedicine);
+    document.getElementById('medicineSearch').addEventListener('input', renderMedicines);
+    document.getElementById('medicineStockFilter').addEventListener('change', renderMedicines);
+    loadMedicines().catch(err => message(err.message));
+</script>
+</body>
+</html>

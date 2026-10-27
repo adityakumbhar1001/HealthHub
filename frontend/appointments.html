@@ -1,16 +1,87 @@
 <!DOCTYPE html>
-<html><head><title>Appointments</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Appointments</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main>
-<h2>Book Appointment</h2>
-<form id="appointmentForm" class="form-grid">
-<input id="apatient" type="number" placeholder="Patient ID" required><input id="adoctor" type="number" placeholder="Doctor ID" required>
-<input id="adate" type="date" required><input id="atime" type="time" required><input id="areason" placeholder="Reason"><button>Book Appointment</button>
-</form>
-<p id="message"></p>
-<h2>Appointments</h2><table><thead><tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr></thead><tbody id="appointmentTable"></tbody></table>
-</main>
-<script src="js/script.js"></script><script>document.getElementById('appointmentForm').addEventListener('submit',addAppointment);loadAppointments();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Appointments - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page appointments-page">
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="dashboard.html">
+            <span class="admin-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="admin-nav-label">WORKSPACE</p>
+        <nav class="admin-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a class="is-active" href="appointments.html" aria-current="page"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="admin-nav-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Appointments</strong></div>
+            <button class="admin-logout" type="button" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="appointments-main">
+            <section class="appointments-page-heading">
+                <div>
+                    <p class="appointments-eyebrow">CARE SCHEDULING</p>
+                    <h1>Appointments</h1>
+                    <p>Review appointments created during patient registration.</p>
+                </div>
+            </section>
+
+            <p id="message" class="appointments-message" role="status" aria-live="polite"></p>
+
+            <section class="appointments-panel appointments-list-panel" aria-labelledby="appointments-list-heading">
+                <div class="appointments-list-heading">
+                    <div class="appointments-panel-heading">
+                        <span class="appointments-section-icon appointments-list-icon" aria-hidden="true">◷</span>
+                        <div>
+                            <h2 id="appointments-list-heading">Appointment schedule</h2>
+                            <p>Review visit details and manage booked appointments.</p>
+                        </div>
+                    </div>
+                    <span id="appointmentCount" class="appointments-count">Loading appointments…</span>
+                </div>
+                <div class="appointments-table-wrap">
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Appointment ID</th>
+                                <th scope="col">Patient</th>
+                                <th scope="col">Doctor</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time / duration</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="appointments-footer">CareSphere <span aria-hidden="true">·</span> Appointment schedule</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    loadAppointments().catch(err => message(err.message));
+</script>
+</body>
+</html>

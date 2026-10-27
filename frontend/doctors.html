@@ -1,13 +1,117 @@
 <!DOCTYPE html>
-<html><head><title>Doctors</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Doctors</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main>
-<h2>Add Doctor</h2>
-<form id="doctorForm" class="form-grid"><input id="dname" placeholder="Name" required><input id="dspecialization" placeholder="Specialization"><input id="dexperience" type="number" placeholder="Experience"><input id="dphone" placeholder="Phone"><button>Add Doctor</button></form>
-<p id="message"></p>
-<h2>Doctor List</h2><table><thead><tr><th>ID</th><th>Name</th><th>Specialization</th><th>Experience</th><th>Phone</th></tr></thead><tbody id="doctorTable"></tbody></table>
-</main>
-<script src="js/script.js"></script><script>document.getElementById('doctorForm').addEventListener('submit',addDoctor);loadDoctors();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Doctors - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page doctors-page">
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="dashboard.html">
+            <span class="admin-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="admin-nav-label">WORKSPACE</p>
+        <nav class="admin-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a class="is-active" href="doctors.html" aria-current="page"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="admin-nav-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Doctors</strong></div>
+            <button class="admin-logout" type="button" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="doctors-main">
+            <section class="doctors-page-heading">
+                <div>
+                    <p class="doctors-eyebrow">CARE TEAM MANAGEMENT</p>
+                    <h1>Doctors</h1>
+                    <p>Browse available doctors and their specializations.</p>
+                </div>
+            </section>
+
+            <p id="message" class="doctors-message" role="status" aria-live="polite"></p>
+
+            <section class="doctors-panel doctors-schedule-panel" aria-labelledby="doctor-schedule-heading">
+                <div class="doctors-schedule-heading">
+                    <div class="doctors-panel-heading">
+                        <span class="doctors-section-icon" aria-hidden="true">&#128197;</span>
+                        <div>
+                            <h2 id="doctor-schedule-heading">Doctor schedules</h2>
+                            <p>Availability, booked visits, and free intervals for the selected date.</p>
+                        </div>
+                    </div>
+                    <div class="doctors-schedule-controls">
+                        <label for="doctorScheduleDate">Schedule date</label>
+                        <input id="doctorScheduleDate" type="date" aria-label="Schedule date">
+                        <button id="doctorScheduleRefresh" type="button">Refresh</button>
+                    </div>
+                </div>
+                <p id="doctorScheduleStatus" class="doctors-schedule-status" role="status" aria-live="polite">Loading doctor schedules...</p>
+                <div id="doctorScheduleCards" class="doctors-schedule-grid" aria-live="polite"></div>
+            </section>
+
+            <section class="doctors-panel doctors-list-panel" aria-labelledby="doctor-list-heading">
+                <div class="doctors-list-heading">
+                    <div class="doctors-panel-heading">
+                        <span class="doctors-section-icon doctors-list-icon" aria-hidden="true">♧</span>
+                        <div>
+                            <h2 id="doctor-list-heading">Doctor directory</h2>
+                            <p>Browse and search registered members of your care team.</p>
+                        </div>
+                    </div>
+                    <label class="doctors-search">
+                        <span class="sr-only">Search doctors by name or specialization</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <circle cx="10.8" cy="10.8" r="6.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                        <input id="doctorSearch" type="search" placeholder="Search doctors">
+                    </label>
+                </div>
+                <div class="doctors-table-meta"><span id="doctorCount">Loading doctors…</span></div>
+                <div class="doctors-table-wrap">
+                    <table class="doctors-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Doctor Name</th>
+                                <th scope="col">Specialization</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="doctors-footer">CareSphere <span aria-hidden="true">·</span> Doctor directory</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('doctorSearch').addEventListener('input', renderDoctors);
+    document.getElementById('doctorScheduleDate').addEventListener('change', loadDoctorSchedules);
+    document.getElementById('doctorScheduleRefresh').addEventListener('click', loadDoctorSchedules);
+    window.addEventListener('focus', loadDoctorSchedules);
+    window.addEventListener('storage', event => {
+        if(event.key === 'caresphere-appointments-updated') loadDoctorSchedules();
+    });
+    loadDoctors();
+    loadDoctorSchedules();
+</script>
+</body>
+</html>

@@ -1,10 +1,123 @@
 <!DOCTYPE html>
-<html><head><title>Emergency</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Emergency</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main><h2>Add Emergency Case</h2>
-<form id="emergencyForm" class="form-grid"><input id="ename" placeholder="Patient Name" required><input id="econdition" placeholder="Condition"><select id="epriority"><option value="1">1 - Critical</option><option value="2">2 - Serious</option><option value="3">3 - Moderate</option><option value="4">4 - Normal</option></select><button>Add Case</button></form>
-<p id="message"></p><h2>Priority Queue</h2><table><thead><tr><th>ID</th><th>Patient</th><th>Condition</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead><tbody id="emergencyTable"></tbody></table>
-</main><script src="js/script.js"></script><script>document.getElementById('emergencyForm').addEventListener('submit',addEmergency);loadEmergency();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Emergency - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page emergency-page">
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="dashboard.html">
+            <span class="admin-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="admin-nav-label">WORKSPACE</p>
+        <nav class="admin-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a class="is-active" href="emergency.html" aria-current="page"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="admin-nav-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Emergency</strong></div>
+            <button class="admin-logout" type="button" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="emergency-main">
+            <section class="emergency-page-heading">
+                <div>
+                    <p class="emergency-eyebrow">URGENT CARE OPERATIONS</p>
+                    <h1>Emergency care</h1>
+                    <p>Register incoming cases and manage the current priority queue.</p>
+                </div>
+                 </section>
+
+            <section class="emergency-panel emergency-form-panel" aria-labelledby="add-emergency-heading">
+                <div class="emergency-panel-heading">
+                    <span class="emergency-section-icon" aria-hidden="true">＋</span>
+                    <div>
+                        <h2 id="add-emergency-heading">Register a case</h2>
+                        <p>Enter the patient's name, available details, and triage priority.</p>
+                    </div>
+                </div>
+                <form id="emergencyForm" class="form-grid emergency-form" novalidate>
+                    <div class="form-field">
+                        <label for="ename">Patient name <span aria-hidden="true">*</span></label>
+                        <input id="ename" name="patient_name" placeholder="Enter patient name" required maxlength="100" autocomplete="name" data-trim>
+                        <span class="field-error" data-error-for="ename" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="econdition">Condition / emergency details <span class="emergency-optional">(optional)</span></label>
+                        <input id="econdition" name="condition_name" placeholder="Add case details if available" maxlength="255" data-trim>
+                        <span class="field-error" data-error-for="econdition" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="epriority">Priority <span aria-hidden="true">*</span></label>
+                        <select id="epriority" name="priority" required>
+                            <option value="1">1 - Critical</option>
+                            <option value="2">2 - Serious</option>
+                            <option value="3">3 - Moderate</option>
+                            <option value="4">4 - Normal</option>
+                        </select>
+                        <span class="field-error" data-error-for="epriority" aria-live="polite"></span>
+                    </div>
+                    <div class="emergency-form-actions">
+                        <span class="emergency-required-note"><span aria-hidden="true">*</span> Required fields</span>
+                        <button class="emergency-submit" type="submit"><span aria-hidden="true">＋</span> Add case</button>
+                    </div>
+                </form>
+            </section>
+
+            <p id="message" class="emergency-message" role="status" aria-live="polite"></p>
+
+            <section class="emergency-panel emergency-queue-panel" aria-labelledby="emergency-queue-heading">
+                <div class="emergency-queue-heading">
+                    <div class="emergency-panel-heading">
+                        <span class="emergency-section-icon emergency-queue-icon" aria-hidden="true">≡</span>
+                        <div>
+                            <h2 id="emergency-queue-heading">Priority queue</h2>
+                            <p>Cases are ordered by the priority set during registration.</p>
+                        </div>
+                    </div>
+                    <span id="emergencyCount" class="emergency-count">Loading cases…</span>
+                </div>
+                <div class="emergency-table-wrap">
+                    <table class="emergency-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Case ID</th>
+                                <th scope="col">Patient</th>
+                                <th scope="col">Condition / details</th>
+                                <th scope="col">Priority</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="emergencyTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="emergency-footer">CareSphere <span aria-hidden="true">·</span> Emergency care</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('emergencyForm').addEventListener('submit', addEmergency);
+    loadEmergency().catch(err => message(err.message));
+</script>
+</body>
+</html>

@@ -1,18 +1,199 @@
 <!DOCTYPE html>
-<html><head><title>Patients</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Patients</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main>
-<h2>Add Patient</h2>
-<form id="patientForm" class="form-grid">
-<input id="pname" placeholder="Name" required><input id="page" type="number" placeholder="Age" required>
-<input id="pgender" placeholder="Gender"><input id="pblood" placeholder="Blood Group">
-<input id="pdisease" placeholder="Disease"><input id="pphone" placeholder="Phone">
-<button>Add Patient</button>
-</form>
-<p id="message"></p>
-<h2>Patient List</h2><table><thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Blood</th><th>Disease</th><th>Phone</th></tr></thead><tbody id="patientTable"></tbody></table>
-</main>
-<script src="js/script.js"></script><script>document.getElementById('patientForm').addEventListener('submit',addPatient); loadPatients();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Patients - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="patients-page">
+<div class="patients-shell">
+    <aside class="patients-sidebar">
+        <a class="patients-brand" href="dashboard.html">
+            <span class="patients-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="patients-nav-label">WORKSPACE</p>
+        <nav class="patients-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a class="is-active" href="patients.html" aria-current="page"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="patients-nav-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="patients-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="patients-content">
+        <header class="patients-topbar">
+            <div class="patients-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Patients</strong></div>
+            <button class="patients-logout" type="button" onclick="logout()">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M10 17l5-5-5-5M15 12H3m9-8h7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Logout
+            </button>
+        </header>
+
+        <main class="patients-main">
+            <section class="patients-page-heading">
+                <div>
+                    <p class="patients-eyebrow">PATIENT MANAGEMENT</p>
+                    <h1>Patients</h1>
+                    <p>Manage patient records and care information.</p>
+                </div>
+            </section>
+
+            <section class="patients-panel patients-form-panel" aria-labelledby="add-patient-heading">
+                <div class="patients-panel-heading">
+                    <span class="patients-section-icon" aria-hidden="true">+</span>
+                    <div>
+                        <h2 id="add-patient-heading">Add new patient</h2>
+                        <p>Enter the patient's details to create a record.</p>
+                    </div>
+                </div>
+                <form id="patientForm" class="form-grid patients-form" novalidate>
+                    <div class="form-field">
+                        <label for="pname">Name <span aria-hidden="true">*</span></label>
+                        <input id="pname" name="name" placeholder="Enter full name" required minlength="2" maxlength="100" autocomplete="name" data-trim>
+                        <span class="field-error" data-error-for="pname" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="page">Age <span aria-hidden="true">*</span></label>
+                        <input id="page" name="age" type="number" placeholder="Enter age" required min="1" max="120" step="1" inputmode="numeric">
+                        <span class="field-error" data-error-for="page" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="pgender">Gender <span aria-hidden="true">*</span></label>
+                        <select id="pgender" name="gender" required>
+                            <option value="">Select gender</option>
+                            <option>Female</option>
+                            <option>Male</option>
+                            <option>Other</option>
+                            <option>Prefer not to say</option>
+                        </select>
+                        <span class="field-error" data-error-for="pgender" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="pblood">Blood group <span aria-hidden="true">*</span></label>
+                        <select id="pblood" name="blood_group" required>
+                            <option value="">Select blood group</option>
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                            <option>O+</option>
+                            <option>O-</option>
+                        </select>
+                        <span class="field-error" data-error-for="pblood" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="pdisease">Disease / condition <span aria-hidden="true">*</span></label>
+                        <select id="pdisease" name="disease" required>
+                            <option value="">Select disease category</option>
+                            <option>Fever / Common Cold</option>
+                            <option>Heart-related condition</option>
+                            <option>Skin condition</option>
+                            <option>Bone / Joint problem</option>
+                            <option>Children's health condition</option>
+                            <option>Brain / Nervous system condition</option>
+                            <option>Other / General illness</option>
+                        </select>
+                        <span class="field-error" data-error-for="pdisease" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field" id="assignedDoctorPanel" aria-live="polite">
+                        <label>Assigned doctor</label>
+                        <input id="assignedDoctor" value="Choose a disease category" readonly aria-readonly="true">
+                    </div>
+                    <div class="form-field">
+                        <label for="pphone">Phone <span aria-hidden="true">*</span></label>
+                        <input id="pphone" name="phone" type="tel" placeholder="Enter phone number" required maxlength="20" pattern="[+]?[0-9][0-9 \x28\x29\x2D]{6,18}[0-9]" autocomplete="tel" data-trim>
+                        <span class="field-error" data-error-for="pphone" aria-live="polite"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="pduration">Appointment duration <span aria-hidden="true">*</span></label>
+                        <select id="pduration" name="duration_minutes" required>
+                            <option value="">Loading appointment durations...</option>
+                        </select>
+                        <span class="field-error" data-error-for="pduration" aria-live="polite"></span>
+                    </div>
+                    <div class="patients-form-actions">
+                        <span class="patients-required-note"><span aria-hidden="true">*</span> Required fields</span>
+                        <button class="patients-submit" type="submit"><span aria-hidden="true">＋</span> Add patient</button>
+                    </div>
+                </form>
+            </section>
+
+            <p id="message" class="patients-message" role="status" aria-live="polite"></p>
+
+            <section class="patients-panel patients-list-panel" aria-labelledby="patient-list-heading">
+                <div class="patients-list-heading">
+                    <div class="patients-panel-heading">
+                        <span class="patients-section-icon patients-list-icon" aria-hidden="true">▤</span>
+                        <div>
+                            <h2 id="patient-list-heading">Patient list</h2>
+                            <p>Search and review registered patient records.</p>
+                        </div>
+                    </div>
+                    <div class="patients-list-controls">
+                        <label class="patients-search">
+                            <span class="sr-only">Search by patient ID, name, condition, or phone</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="10.8" cy="10.8" r="6.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                                <path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                            <input id="patientSearch" type="search" placeholder="Search ID, name, condition, phone">
+                        </label>
+                        <label class="patients-filter">
+                            <span class="sr-only">Filter patients by gender</span>
+                            <select id="patientGenderFilter">
+                                <option value="">All genders</option>
+                                <option>Female</option>
+                                <option>Male</option>
+                                <option>Other</option>
+                                <option>Prefer not to say</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="patients-table-meta"><span id="patientCount">Loading patients…</span></div>
+                <div class="patients-table-wrap">
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Patient ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Blood group</th>
+                                <th scope="col">Disease / condition</th>
+                                <th scope="col">Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="patients-footer">CareSphere <span aria-hidden="true">·</span> Patient records</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('patientForm').addEventListener('submit', addPatient);
+    document.getElementById('pdisease').addEventListener('change', updatePatientDoctorPreview);
+    document.getElementById('patientSearch').addEventListener('input', renderPatients);
+    document.getElementById('patientGenderFilter').addEventListener('change', renderPatients);
+    loadPatients();
+    loadAppointmentOptions();
+</script>
+</body>
+</html>

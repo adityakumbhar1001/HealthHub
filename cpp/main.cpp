@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstring>
 #include <stdexcept>
 using namespace std;
 /*
@@ -233,12 +234,12 @@ private:
 public:
 
     // Parameterized Constructor
-    EmergencyCase(int i, string n, string c, int p)
+    EmergencyCase(int caseid, string patientname, string condition, int priority)
     {
-        caseId = i;
-        patientName = n;
-        condition = c;
-        priority = p;
+        this->caseId = caseid;
+        this->patientName = patientname;
+        this->condition = condition;
+        this->priority = priority;
     }
 
     // Operator Overloading
@@ -281,7 +282,7 @@ public:
             throw invalid_argument("Stock cannot be negative.");
         }
 
-        quantity = quantity + amount;
+        this->quantity = quantity + amount;
     }
 
     bool lowStock() const
@@ -320,6 +321,10 @@ public:
         medicineFee = m;
         labFee = l;
     }
+    Bill(const Bill& other)
+    : consultationFee(other.consultationFee),
+      medicineFee(other.medicineFee),
+      labFee(other.labFee){}
 
     double calculateTotal() const
     {
@@ -461,6 +466,21 @@ public:
         }
         cout << "Patient not found." << endl;
     }
+    void searchPatient(string patientname)
+    {
+        for(const Patient& name:patients)
+        {
+            if(name.getName()==patientname)
+            {
+                cout << endl;
+                cout << "Patient found:" << endl;
+
+                name.display();
+
+                return;
+            }
+        }
+    }
 };
 
 // Main Function
@@ -556,6 +576,7 @@ int main()
         cout << "File Handling:" << endl;
 
         hospital.savePatientsToFile();
+
 
         // Dynamic Allocation
         Patient* dynamicPatient = new Patient(103,"Aman",28,"Cold","A+");

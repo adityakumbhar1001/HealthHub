@@ -1,9 +1,90 @@
 <!DOCTYPE html>
-<html><head><title>Billing</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Billing</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main><h2>Generate Bill</h2><form id="billForm" class="form-grid"><input id="bpatient" type="number" placeholder="Patient ID" required><input id="bconsult" type="number" step="0.01" placeholder="Consultation Fee"><input id="bmedicine" type="number" step="0.01" placeholder="Medicine Fee"><input id="blab" type="number" step="0.01" placeholder="Lab Fee"><button>Generate Bill</button></form><p id="message"></p>
-<table><thead><tr><th>ID</th><th>Patient</th><th>Consultation</th><th>Medicine</th><th>Lab</th><th>Total</th><th>Date</th></tr></thead><tbody id="billTable"></tbody></table></main>
-<script src="js/script.js"></script><script>document.getElementById('billForm').addEventListener('submit',addBill);loadBills();</script>
-</body></html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Billing - CareSphere</title><link rel="stylesheet" href="css/style.css"></head>
+<body class="admin-page billing-page">
+<div class="admin-shell">
+<aside class="admin-sidebar">
+<a class="admin-brand" href="dashboard.html"><span class="admin-brand-mark" aria-hidden="true">+</span><span><strong>CareSphere</strong><small>Hospital management</small></span></a>
+<p class="admin-nav-label">WORKSPACE</p>
+<nav class="admin-nav" aria-label="Main navigation">
+<a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a><a href="patients.html"><span aria-hidden="true">♧</span>Patients</a><a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a><a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a><a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a><a href="beds.html"><span aria-hidden="true">▤</span>Beds</a><span class="admin-nav-divider" aria-hidden="true"></span><a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a><a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a><a class="is-active" href="billing.html" aria-current="page"><span aria-hidden="true">▧</span>Billing</a>
+</nav><div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+</aside>
+<div class="admin-content"><header class="admin-topbar"><div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Billing</strong></div><button class="admin-logout" type="button" onclick="logout()">Logout</button></header>
+<main class="billing-main">
+    <section class="billing-page-heading" aria-labelledby="billingTitle">
+        <div>
+            <p class="billing-eyebrow">FINANCIAL SERVICES</p>
+            <h1 id="billingTitle">Billing &amp; invoices</h1>
+            <p>Generate patient bills and review recorded charges.</p>
+        </div>
+    </section>
+
+    <section class="billing-overview" aria-label="Billing overview">
+        <article class="billing-summary-card">
+            <span class="billing-summary-icon" aria-hidden="true">▧</span>
+            <div><p>Total bills</p><strong id="billingCount">—</strong><small>Recorded invoices</small></div>
+        </article>
+        <article class="billing-summary-card billing-summary-card-total">
+            <span class="billing-summary-icon" aria-hidden="true">₹</span>
+            <div><p>Total billed</p><strong id="billingTotal">—</strong><small>Sum of recorded bill totals</small></div>
+        </article>
+        <article class="billing-summary-card">
+            <span class="billing-summary-icon" aria-hidden="true">◷</span>
+            <div><p>Most recent bill</p><strong id="billingLatest">—</strong><small>By bill ID</small></div>
+        </article>
+    </section>
+
+    <section class="billing-panel billing-form-panel" aria-labelledby="billingFormTitle">
+        <div class="billing-panel-heading">
+            <span class="billing-section-icon" aria-hidden="true">＋</span>
+            <div><h2 id="billingFormTitle">Generate a bill</h2><p>Enter the patient and applicable charges below.</p></div>
+        </div>
+        <form id="billForm" class="billing-form">
+            <div class="billing-field">
+                <label for="bpatient">Patient ID <span aria-label="required">*</span></label>
+                <input id="bpatient" type="number" placeholder="Enter patient ID" required>
+            </div>
+            <div class="billing-field">
+                <label for="bconsult">Consultation fee <span class="billing-optional">Optional</span></label>
+                <div class="billing-input-prefix"><span aria-hidden="true">₹</span><input id="bconsult" type="number" step="0.01" placeholder="0.00"></div>
+            </div>
+            <div class="billing-field">
+                <label for="bmedicine">Medicine fee <span class="billing-optional">Optional</span></label>
+                <div class="billing-input-prefix"><span aria-hidden="true">₹</span><input id="bmedicine" type="number" step="0.01" placeholder="0.00"></div>
+            </div>
+            <div class="billing-field">
+                <label for="blab">Lab fee <span class="billing-optional">Optional</span></label>
+                <div class="billing-input-prefix"><span aria-hidden="true">₹</span><input id="blab" type="number" step="0.01" placeholder="0.00"></div>
+            </div>
+            <div class="billing-form-actions">
+                <p class="billing-required-note"><span>*</span> Required field. The bill total is calculated by the system.</p>
+                <button class="billing-submit" type="submit"><span aria-hidden="true">＋</span> Generate bill</button>
+            </div>
+        </form>
+        <p id="message" class="billing-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="billing-panel billing-records-panel" aria-labelledby="billingRecordsTitle">
+        <div class="billing-records-heading">
+            <div class="billing-panel-heading">
+                <span class="billing-section-icon billing-records-icon" aria-hidden="true">▤</span>
+                <div><h2 id="billingRecordsTitle">Bill records</h2><p>Charges and totals from saved patient bills.</p></div>
+            </div>
+            <label class="billing-search">
+                <span class="billing-sr-only">Search bills</span>
+                <svg aria-hidden="true" viewBox="0 0 20 20" fill="none"><circle cx="8.8" cy="8.8" r="5.8" stroke="currentColor" stroke-width="1.5"/><path d="m13.2 13.2 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <input id="billingSearch" type="search" placeholder="Search ID, patient, or date">
+            </label>
+        </div>
+        <p id="billingTableMeta" class="billing-table-meta" aria-live="polite"></p>
+        <div class="billing-table-wrap">
+            <table class="billing-table">
+                <thead><tr><th scope="col">Bill ID</th><th scope="col">Patient</th><th scope="col">Consultation</th><th scope="col">Medicine</th><th scope="col">Lab</th><th scope="col">Total</th><th scope="col">Bill date</th></tr></thead>
+                <tbody id="billTable"></tbody>
+            </table>
+        </div>
+    </section>
+    <footer class="billing-footer">CareSphere <span aria-hidden="true">•</span> Hospital administration</footer>
+</main>
+<script src="js/script.js"></script><script>document.getElementById('billForm').addEventListener('submit',addBill);document.getElementById('billingSearch').addEventListener('input',renderBills);loadBills();</script>
+</div></div></body></html>

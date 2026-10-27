@@ -1,31 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
     <title>Dashboard - CareSphere</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-<header><h1>CareSphere</h1><button onclick="logout()">Logout</button></header>
-<nav>
-<a href="dashboard.html">Dashboard</a>
-<a href="patients.html">Patients</a>
-<a href="doctors.html">Doctors</a>
-<a href="appointments.html">Appointments</a>
-<a href="emergency.html">Emergency</a>
-<a href="beds.html">Beds</a>
-<a href="pharmacy.html">Pharmacy</a>
-<a href="laboratory.html">Laboratory</a>
-<a href="billing.html">Billing</a>
-</nav>
-<main>
-<h2>Hospital Dashboard</h2>
-<div class="cards">
-<div class="card"><h3>Patients</h3><span id="patients">0</span></div>
-<div class="card"><h3>Doctors</h3><span id="doctors">0</span></div>
-<div class="card"><h3>Appointments</h3><span id="appointments">0</span></div>
-<div class="card"><h3>Available Beds</h3><span id="beds">0</span></div>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+        <a class="dashboard-sidebar-brand" href="dashboard.html" aria-label="CareSphere dashboard">
+            <span class="dashboard-brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" focusable="false">
+                    <path d="M14 5h4v9h9v4h-9v9h-4v-9H5v-4h9z" fill="currentColor"/>
+                </svg>
+            </span>
+            <span class="dashboard-brand-copy">
+                <strong>CareSphere</strong>
+                <small>Hospital management</small>
+            </span>
+        </a>
+        <p class="dashboard-sidebar-label">WORKSPACE</p>
+        <nav class="dashboard-sidebar-nav" aria-label="Main navigation">
+            <a class="is-active" href="dashboard.html" aria-current="page"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="dashboard-sidebar-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="dashboard-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="dashboard-content">
+        <header class="dashboard-header">
+            <span class="dashboard-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Dashboard</strong></span>
+            <div class="dashboard-header-actions">
+                <span class="dashboard-portal-label"><span aria-hidden="true"></span> Administration portal</span>
+                <button class="dashboard-logout" type="button" onclick="logout()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M10 17l5-5-5-5M15 12H3m9-8h7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+    <main class="dashboard-main">
+        <section class="dashboard-welcome" aria-labelledby="dashboard-title">
+            <div>
+                <p class="dashboard-eyebrow">HOSPITAL OVERVIEW</p>
+                <h1 id="dashboard-title">Hospital Dashboard</h1>
+                <p class="dashboard-subtitle">A clear view of your hospital's current operations.</p>
+            </div>
+            <div class="dashboard-live-indicator"><span aria-hidden="true"></span> Live data</div>
+        </section>
+
+        <section class="dashboard-stats" aria-label="Hospital statistics">
+            <article class="dashboard-stat-card stat-patients">
+                <div class="dashboard-stat-top">
+                    <span class="dashboard-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M16 20v-1.5a4.5 4.5 0 0 0-4.5-4.5h-3A4.5 4.5 0 0 0 4 18.5V20m6-9a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7-7.5a4 4 0 0 1 0 7.75M20 20v-1.5a4.5 4.5 0 0 0-3.2-4.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="dashboard-stat-kicker">PATIENT CARE</span>
+                </div>
+                <h2>Total Patients</h2>
+                <p class="dashboard-stat-value" id="patients" aria-live="polite">—</p>
+                <p class="dashboard-stat-note">Registered in CareSphere</p>
+            </article>
+
+            <article class="dashboard-stat-card stat-doctors">
+                <div class="dashboard-stat-top">
+                    <span class="dashboard-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M8 3v4m8-4v4M6 5h12v6a6 6 0 0 1-12 0V5Zm6 12v4m-4 0h8m-4-9v4m-2-2h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="dashboard-stat-kicker">CARE TEAM</span>
+                </div>
+                <h2>Doctors</h2>
+                <p class="dashboard-stat-value" id="doctors" aria-live="polite">—</p>
+                <p class="dashboard-stat-note">Healthcare professionals</p>
+            </article>
+
+            <article class="dashboard-stat-card stat-appointments">
+                <div class="dashboard-stat-top">
+                    <span class="dashboard-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <rect x="3.5" y="5" width="17" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+                            <path d="M7.5 3v4m9-4v4M3.5 9.5h17M8 14h3m2 0h3m-8 3h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="dashboard-stat-kicker">SCHEDULE</span>
+                </div>
+                <h2>Appointments</h2>
+                <p class="dashboard-stat-value" id="appointments" aria-live="polite">—</p>
+                <p class="dashboard-stat-note">Currently booked</p>
+            </article>
+
+            <article class="dashboard-stat-card stat-beds">
+                <div class="dashboard-stat-top">
+                    <span class="dashboard-stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M3 19V6m0 9h18v4m0-4V9a2 2 0 0 0-2-2h-5v8M3 11h5a3 3 0 0 1 3 3v1M3 19v2m18-2v2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="dashboard-stat-kicker">CAPACITY</span>
+                </div>
+                <h2>Available Beds</h2>
+                <p class="dashboard-stat-value" id="beds" aria-live="polite">—</p>
+                <p class="dashboard-stat-note">Ready for allocation</p>
+            </article>
+        </section>
+
+        <section class="dashboard-appointments-panel" aria-labelledby="recent-appointments-title">
+            <div class="dashboard-panel-heading">
+                <div>
+                    <p class="dashboard-eyebrow">SCHEDULE</p>
+                    <h2 id="recent-appointments-title">Appointment overview</h2>
+                    <p>Appointments scheduled across your care team.</p>
+                </div>
+                <a class="dashboard-view-all" href="appointments.html">View all appointments <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="dashboard-table-wrap">
+                <table class="dashboard-appointments-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Patient</th>
+                            <th scope="col">Doctor</th>
+                            <th scope="col">Date &amp; time</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboard-appointments">
+                        <tr><td class="dashboard-table-message" colspan="4">Loading appointments…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <p class="dashboard-message" id="message" role="status" aria-live="polite"></p>
+    </main>
+    </div>
 </div>
-</main>
 <script src="js/script.js"></script>
 <script>loadDashboard();</script>
 </body>

@@ -1,9 +1,10 @@
-{
+﻿{
   "name": "caresphere-backend",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node test/scheduler.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

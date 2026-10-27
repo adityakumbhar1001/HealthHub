@@ -1,9 +1,126 @@
 <!DOCTYPE html>
-<html><head><title>Beds</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Beds</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main><h2>Bed Management</h2><p>To allocate a bed, enter a patient ID.</p><input id="bedPatient" type="number" placeholder="Patient ID"><button onclick="allocateBed()">Allocate Selected Bed</button><p id="message"></p>
-<table><thead><tr><th>ID</th><th>Room</th><th>Ward</th><th>Status</th><th>Patient</th><th>Action</th></tr></thead><tbody id="bedTable"></tbody></table>
-</main><script src="js/script.js"></script><script>loadBeds();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Beds - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page beds-page">
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="dashboard.html">
+            <span class="admin-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="admin-nav-label">WORKSPACE</p>
+        <nav class="admin-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a class="is-active" href="beds.html" aria-current="page"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="admin-nav-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a href="laboratory.html"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Beds</strong></div>
+            <button class="admin-logout" type="button" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="beds-main">
+            <section class="beds-page-heading">
+                <div>
+                    <p class="beds-eyebrow">INPATIENT CAPACITY</p>
+                    <h1>Bed management</h1>
+                    <p>Review ward availability and manage patient bed assignments.</p>
+                </div>
+            </section>
+
+            <section class="beds-overview" aria-label="Bed availability summary">
+                <article class="beds-summary-card beds-total-card">
+                    <span class="beds-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M3 19V6m0 9h18v4m0-4V9a2 2 0 0 0-2-2h-5v8M3 11h5a3 3 0 0 1 3 3v1M3 19v2m18-2v2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Total beds</p><strong id="bedsTotal">—</strong><span>Across all wards</span></div>
+                </article>
+                <article class="beds-summary-card beds-available-card">
+                    <span class="beds-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Available</p><strong id="bedsAvailable">—</strong><span>Ready for allocation</span></div>
+                </article>
+                <article class="beds-summary-card beds-occupied-card">
+                    <span class="beds-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8v-1a7 7 0 0 1 14 0v1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Occupied</p><strong id="bedsOccupied">—</strong><span>Currently assigned</span></div>
+                </article>
+            </section>
+
+            <section class="beds-panel beds-allocation-panel" aria-labelledby="allocate-bed-heading">
+                <div class="beds-panel-heading">
+                    <span class="beds-section-icon" aria-hidden="true">↗</span>
+                    <div>
+                        <h2 id="allocate-bed-heading">Allocate an available bed</h2>
+                        <p>Choose an available bed from the list, then enter the patient's ID.</p>
+                    </div>
+                </div>
+                <form id="bedAllocationForm" class="form-grid beds-allocation-form" novalidate>
+                    <div class="form-field">
+                        <label for="bedPatient">Patient ID <span aria-hidden="true">*</span></label>
+                        <input id="bedPatient" name="patient_id" type="number" placeholder="Enter patient ID" required min="1" max="2147483647" step="1" inputmode="numeric">
+                        <span class="field-error" data-error-for="bedPatient" aria-live="polite"></span>
+                    </div>
+                    <button class="beds-submit" type="submit"><span aria-hidden="true">↗</span> Allocate selected bed</button>
+                </form>
+            </section>
+
+            <p id="message" class="beds-message" role="status" aria-live="polite"></p>
+
+            <section class="beds-panel beds-list-panel" aria-labelledby="bed-list-heading">
+                <div class="beds-list-heading">
+                    <div class="beds-panel-heading">
+                        <span class="beds-section-icon beds-list-icon" aria-hidden="true">▤</span>
+                        <div>
+                            <h2 id="bed-list-heading">Bed directory</h2>
+                            <p>Current rooms, wards, availability, and patient assignments.</p>
+                        </div>
+                    </div>
+                    <span id="bedListCount" class="beds-list-count">Loading beds…</span>
+                </div>
+                <div class="beds-table-wrap">
+                    <table class="beds-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Bed ID</th>
+                                <th scope="col">Room</th>
+                                <th scope="col">Ward</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Patient ID</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bedTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="beds-footer">CareSphere <span aria-hidden="true">·</span> Inpatient capacity</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('bedAllocationForm').addEventListener('submit', allocateBed);
+    loadBeds().catch(err => message(err.message));
+</script>
+</body>
+</html>

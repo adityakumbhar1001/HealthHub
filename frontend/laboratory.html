@@ -1,9 +1,163 @@
 <!DOCTYPE html>
-<html><head><title>Laboratory</title><link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header><h1>CareSphere - Laboratory</h1><button onclick="logout()">Logout</button></header>
-<nav><a href="dashboard.html">Dashboard</a><a href="patients.html">Patients</a><a href="doctors.html">Doctors</a><a href="appointments.html">Appointments</a><a href="emergency.html">Emergency</a><a href="beds.html">Beds</a><a href="pharmacy.html">Pharmacy</a><a href="laboratory.html">Laboratory</a><a href="billing.html">Billing</a></nav>
-<main><h2>Add Lab Test</h2><form id="labForm" class="form-grid"><input id="lpatient" type="number" placeholder="Patient ID" required><input id="ltest" placeholder="Test Name" required><input id="lresult" placeholder="Result"><select id="lstatus"><option>Pending</option><option>Completed</option></select><button>Add Test</button></form><p id="message"></p>
-<table><thead><tr><th>ID</th><th>Patient</th><th>Test</th><th>Result</th><th>Date</th><th>Status</th></tr></thead><tbody id="labTable"></tbody></table></main>
-<script src="js/script.js"></script><script>document.getElementById('labForm').addEventListener('submit',addLab);loadLabs();</script>
-</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102b46">
+    <title>Laboratory - CareSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page laboratory-page">
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="admin-brand" href="dashboard.html">
+            <span class="admin-brand-mark" aria-hidden="true">+</span>
+            <span><strong>CareSphere</strong><small>Hospital management</small></span>
+        </a>
+        <p class="admin-nav-label">WORKSPACE</p>
+        <nav class="admin-nav" aria-label="Main navigation">
+            <a href="dashboard.html"><span aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="patients.html"><span aria-hidden="true">♧</span>Patients</a>
+            <a href="doctors.html"><span aria-hidden="true">✚</span>Doctors</a>
+            <a href="appointments.html"><span aria-hidden="true">▣</span>Appointments</a>
+            <a href="emergency.html"><span aria-hidden="true">＋</span>Emergency</a>
+            <a href="beds.html"><span aria-hidden="true">▤</span>Beds</a>
+            <span class="admin-nav-divider" aria-hidden="true"></span>
+            <a href="pharmacy.html"><span aria-hidden="true">✚</span>Pharmacy</a>
+            <a class="is-active" href="laboratory.html" aria-current="page"><span aria-hidden="true">⌬</span>Laboratory</a>
+            <a href="billing.html"><span aria-hidden="true">▧</span>Billing</a>
+        </nav>
+        <div class="admin-sidebar-footer"><span aria-hidden="true"></span>Care starts here</div>
+    </aside>
+
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <div class="admin-breadcrumb"><span>CareSphere</span><span aria-hidden="true">/</span><strong>Laboratory</strong></div>
+            <button class="admin-logout" type="button" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="laboratory-main">
+            <section class="laboratory-page-heading">
+                <div>
+                    <p class="laboratory-eyebrow">DIAGNOSTIC SERVICES</p>
+                    <h1>Laboratory</h1>
+                    <p>Register lab tests and review patient results and status.</p>
+                </div>
+            </section>
+
+            <section class="laboratory-overview" aria-label="Laboratory test summary">
+                <article class="laboratory-summary-card laboratory-total-card">
+                    <span class="laboratory-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M9 3h6m-5 0v6.2L4.6 18a2 2 0 0 0 1.7 3h11.4a2 2 0 0 0 1.7-3L14 9.2V3M7 15h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Total tests</p><strong id="labTotal">—</strong><span>Registered test records</span></div>
+                </article>
+                <article class="laboratory-summary-card laboratory-pending-card">
+                    <span class="laboratory-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Pending</p><strong id="labPending">—</strong><span>Awaiting completion</span></div>
+                </article>
+                <article class="laboratory-summary-card laboratory-completed-card">
+                    <span class="laboratory-summary-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="m5 12 4.2 4.2L19 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><p>Completed</p><strong id="labCompleted">—</strong><span>Results recorded</span></div>
+                </article>
+            </section>
+
+            <section class="laboratory-panel laboratory-form-panel" aria-labelledby="add-lab-heading">
+                <div class="laboratory-panel-heading">
+                    <span class="laboratory-section-icon" aria-hidden="true">⌬</span>
+                    <div>
+                        <h2 id="add-lab-heading">Add laboratory test</h2>
+                        <p>Record a test for a patient and set its current status.</p>
+                    </div>
+                </div>
+                <form id="labForm" class="form-grid laboratory-form">
+                    <div class="form-field">
+                        <label for="lpatient">Patient ID <span aria-hidden="true">*</span></label>
+                        <input id="lpatient" name="patient_id" type="number" placeholder="Enter patient ID" required min="1" step="1" inputmode="numeric">
+                    </div>
+                    <div class="form-field">
+                        <label for="ltest">Test name <span aria-hidden="true">*</span></label>
+                        <input id="ltest" name="test_name" placeholder="Enter test name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="lresult">Result <span class="laboratory-optional">(optional)</span></label>
+                        <input id="lresult" name="result" placeholder="Enter result if available">
+                    </div>
+                    <div class="form-field">
+                        <label for="lstatus">Status</label>
+                        <select id="lstatus" name="status">
+                            <option>Pending</option>
+                            <option>Completed</option>
+                        </select>
+                    </div>
+                    <div class="laboratory-form-actions">
+                        <span class="laboratory-required-note"><span aria-hidden="true">*</span> Required fields</span>
+                        <button class="laboratory-submit" type="submit"><span aria-hidden="true">＋</span> Add test</button>
+                    </div>
+                </form>
+            </section>
+
+            <p id="message" class="laboratory-message" role="status" aria-live="polite"></p>
+
+            <section class="laboratory-panel laboratory-records-panel" aria-labelledby="lab-records-heading">
+                <div class="laboratory-records-heading">
+                    <div class="laboratory-panel-heading">
+                        <span class="laboratory-section-icon laboratory-records-icon" aria-hidden="true">▤</span>
+                        <div>
+                            <h2 id="lab-records-heading">Laboratory records</h2>
+                            <p>Review patient tests, results, dates, and current status.</p>
+                        </div>
+                    </div>
+                    <div class="laboratory-record-controls">
+                        <label class="laboratory-search">
+                            <span class="sr-only">Search by patient, test, result, or test ID</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="10.8" cy="10.8" r="6.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                                <path d="m16 16 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                            <input id="labSearch" type="search" placeholder="Search tests">
+                        </label>
+                        <label class="laboratory-status-filter">
+                            <span class="sr-only">Filter laboratory tests by status</span>
+                            <select id="labStatusFilter">
+                                <option value="">All statuses</option>
+                                <option>Pending</option>
+                                <option>Completed</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="laboratory-table-meta"><span id="labListCount">Loading tests…</span></div>
+                <div class="laboratory-table-wrap">
+                    <table class="laboratory-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Test ID</th>
+                                <th scope="col">Patient</th>
+                                <th scope="col">Test</th>
+                                <th scope="col">Result</th>
+                                <th scope="col">Test date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="labTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            <footer class="laboratory-footer">CareSphere <span aria-hidden="true">·</span> Diagnostic services</footer>
+        </main>
+    </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('labForm').addEventListener('submit', addLab);
+    document.getElementById('labSearch').addEventListener('input', renderLabs);
+    document.getElementById('labStatusFilter').addEventListener('change', renderLabs);
+    loadLabs().catch(err => message(err.message));
+</script>
+</body>
+</html>
